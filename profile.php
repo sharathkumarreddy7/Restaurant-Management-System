@@ -4,6 +4,8 @@ session_start();
 
 // Include the database connection file
 include "connect.php";
+include 'Includes/functions/functions.php';
+include "Includes/templates/header.php";
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -12,9 +14,9 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Retrieve user information from the database based on username
-$stmt = $con->prepare("SELECT * FROM clients WHERE client_username = ?");
-$stmt->execute([$_SESSION['user_username']]);
+// Retrieve user information from the database based on client_id
+$stmt = $con->prepare("SELECT * FROM clients WHERE client_id = ?");
+$stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Check if user exists
@@ -90,7 +92,6 @@ if (isset($_POST['logout'])) {
 <div class="container">
     <h2>User Profile</h2>
     <p>Full Name: <?php echo $user['client_name']; ?></p>
-    <p>Username: <?php echo $user['client_username']; ?></p>
     <p>Email: <?php echo $user['client_email']; ?></p>
     <p>Address: <?php echo $user['client_address']; ?></p>
     <p>Phone: <?php echo $user['client_phone']; ?></p>

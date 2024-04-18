@@ -15,7 +15,7 @@
     include "Includes/templates/navbar.php";
 
     // Check if user is logged in
-    if (!isset($_SESSION['user_username'])) {
+    if (!isset($_SESSION['client_id'])) {
         // If user is not logged in, redirect to login page
         header("Location: login.php");
         exit(); // Stop further execution
@@ -27,12 +27,8 @@
         if(isset($_POST['selected_menus']) && is_array($_POST['selected_menus'])) {
             $selected_menus = $_POST['selected_menus'];
 
-            // Get client ID
-            $client_username = $_SESSION['user_username'];
-            $stmtClientId = $con->prepare("SELECT client_id FROM clients WHERE client_username = ?");
-            $stmtClientId->execute([$client_username]);
-            $client_id_row = $stmtClientId->fetch();
-            $client_id = $client_id_row['client_id'];
+            // Get client ID directly from session
+            $client_id = $_SESSION['client_id'];  // Assuming 'user_id' is the client ID
 
             // Create or retrieve order_id
             $order_id = null;
@@ -46,22 +42,21 @@
                 $order_id = 1;
             }
 
-            // Insert selected menus into the in_order table
-            foreach ($selected_menus as $menu) {
-                $stmt = $con->prepare("INSERT INTO in_order (order_id, menu_id, quantity) VALUES (?, ?, 1)");
-                $stmt->execute([$order_id, $menu]);
-            }
+        // Insert selected menus into the in_order table
+        foreach ($selected_menus as $menu) {
+            $stmt = $con->prepare("INSERT INTO in_order (order_id, client_id, menu_id, quantity) VALUES (?, ?, ?, 1)");
+            $stmt->execute([$order_id, $client_id, $menu]);
+        }
 
-            // Redirect to cart.php
-            header("Location: cart.php?order_id={$order_id}");
-            exit(); // Stop further execution
-        } else {
-            // If no menu is selected, redirect back to the order page with an error message
-            header("Location: order_food.php?error=no_menu_selected");
-            exit(); // Stop further execution
+        // Redirect to cart.php
+        header("Location: cart.php?order_id={$order_id}");
+        exit(); // Stop further execution
+
+
         }
     }
 ?>
+
 
 
 <!-- ORDER FOOD PAGE STYLE -->

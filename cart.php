@@ -13,13 +13,6 @@
     include "Includes/templates/header.php";
     include "Includes/templates/navbar.php";
 
-    // Check if user is logged in
-    if (!isset($_SESSION['user_username'])) {
-        // If user is not logged in, redirect to login page
-        header("Location: login.php");
-        exit(); // Stop further execution
-    }
-
     // Check if order_id is set
     if (!isset($_GET['order_id'])) {
         // If order_id is not provided, redirect to the order page with an error message

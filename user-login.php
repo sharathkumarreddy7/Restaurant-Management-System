@@ -8,13 +8,13 @@ include 'Includes/functions/functions.php';
 
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve username and password from the form
-    $username = $_POST['user_username'];
+    // Retrieve email and password from the form
+    $useremail = $_POST['user_email'];
     $password = $_POST['user_password'];
 
-    // Prepare and execute SQL query to check if username and password match
-    $stmt = $con->prepare("SELECT * FROM clients WHERE client_username = ? AND client_password = ?");
-    $stmt->execute([$username, $password]);
+    // Prepare and execute SQL query to check if email and password match
+    $stmt = $con->prepare("SELECT * FROM clients WHERE client_email = ? AND client_password = ?");
+    $stmt->execute([$useremail, $password]);
 
     // Fetch the result
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -22,10 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if a user with the provided credentials exists
     if ($user) {
         // User authenticated, set session variables
-        $_SESSION['user_id'] = $user['client_id'];
-        $_SESSION['user_username'] = $user['client_username'];
-
-        // Redirect to home page
+        $_SESSION['client_id'] = $user['client_id'];
+        
+        // Redirect to order_food.php
         header("Location: order_food.php");
         exit; // Stop further execution
     } else {

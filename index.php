@@ -139,7 +139,7 @@
 					<ul style="text-align: center;margin-bottom: 70px">
 						<?php
 
-	                        $stmt = $con->prepare("Select * from menu_categories");
+	                        $stmt = $con->prepare("Select * from category");
 	                        $stmt->execute();
 	                        $rows = $stmt->fetchAll();
 	                        $count = $stmt->rowCount();
@@ -172,7 +172,7 @@
 				<div class="menus_tab">
 					<?php
                 
-                        $stmt = $con->prepare("Select * from menu_categories");
+                        $stmt = $con->prepare("Select * from category");
                         $stmt->execute();
                         $rows = $stmt->fetchAll();
                         $count = $stmt->rowCount();
@@ -187,7 +187,7 @@
 
                                 echo '<div class="menu_item  tab_category_content" id="'.str_replace(' ', '', $row['category_name']).'" style=display:block>';
 
-                                    $stmt_menus = $con->prepare("Select * from menus where category_id = ?");
+                                    $stmt_menus = $con->prepare("Select * from menu where category_id = ?");
                                     $stmt_menus->execute(array($row['category_id']));
                                     $rows_menus = $stmt_menus->fetchAll();
 
@@ -213,13 +213,13 @@
 														                                                    
 	                                                    <div class="caption">
 	                                                        <h5>
-	                                                            <?php echo $menu['menu_name'];?>
+	                                                            <?php echo $menu['item_name'];?>
 	                                                        </h5>
 	                                                        <p>
-	                                                            <?php echo $menu['menu_description']; ?>
+	                                                            <?php echo $menu['item_description']; ?>
 	                                                        </p>
 	                                                        <span class="menu_price">
-	                                                        	<?php echo "$".$menu['menu_price']; ?>
+	                                                        	<?php echo "$".$menu['item_price']; ?>
 	                                                        </span>
 	                                                    </div>
 	                                                </div>

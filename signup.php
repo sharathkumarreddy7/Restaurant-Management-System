@@ -46,7 +46,6 @@
     <div class="signup-option">
         <form action="customer-signup.php" method="post">
             <input type="text" name="customer_name" placeholder="Customer Name" required>
-            <input type="text" name="customer_username" placeholder="Username" required>
             <input type="email" name="customer_email" placeholder="Email" required>
             <input type="password" name="customer_password" placeholder="Password" required>
             <input type="text" name="customer_address" placeholder="Address" required>

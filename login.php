@@ -1,5 +1,5 @@
 
-    <?php
+<?php
         //Set page title
         $pageTitle = 'Login';
 
@@ -46,7 +46,7 @@
         <h2>Login</h2>
         <div class="login-option">
             <form action="user-login.php" method="post">
-                <input type="text" name="user_username" placeholder="Username" required>
+                <input type="text" name="user_email" placeholder="Customer Email" required>
                 <input type="password" name="user_password" placeholder="Password" required>
                 <button type="submit">Customer Login</button>
             </form>
@@ -54,7 +54,7 @@
         </div>
         <div class="login-option">
             <form action="staff-login.php" method="post">
-                <input type="text" name="staff_username" placeholder="Username" required>
+                <input type="text" name="staff_email" placeholder="Employee Email" required>
                 <input type="password" name="staff_password" placeholder="Password" required>
                 <button type="submit">Staff Login</button>
             </form>

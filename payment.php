@@ -5,18 +5,17 @@ include "Includes/functions/functions.php";
 include "Includes/templates/header.php";
 include "Includes/templates/navbar.php";
 
-
 // Check if order_id is set in the URL
 if (!isset($_GET['order_id'])) {
     // If order_id is not provided, redirect to an error page or handle the error accordingly
     header("Location: error.php"); // Adjust this to your error handling page
     exit(); // Stop further execution
 }
+
 // Retrieve order_id from the URL
 $order_id = $_GET['order_id'];
-// Assuming you have the total price stored in $total_price variable
-// You can modify this based on how you calculate the total price in your application
 
+// Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
     // Retrieve card details from the form
     $person_name = $_POST['person_name'];
@@ -24,14 +23,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
     $expiry = $_POST['expiry'];
     $cvv = $_POST['cvv'];
 
-    // Perform necessary validations on card details
+    // Validate card details (You should perform proper validation here)
+    // Insert payment details into the Payments table
+    $stmtPayment = $con->prepare("INSERT INTO Payments (Time, Amount, Order_ID) VALUES (NOW(), (SELECT SUM(menu_price * quantity) FROM in_order JOIN menus ON in_order.menu_id = menus.menu_id WHERE in_order.order_id = ?), ?)");
+    if (!$stmtPayment) {
+        echo "Error in preparing SQL statement: " . $con->error;
+    }
+    $stmtPayment->execute([$order_id, $order_id]);
 
-    // Move the particular order from in_order table to placed_orders table
-    // Here, you need to write your SQL queries to move the order
+    // Move order details from in_order table to placed_orders table
+    $stmtOrderDetails = $con->prepare("INSERT INTO placed_orders (order_id, order_time, client_id, delivery_address, delivered, canceled)
+    SELECT DISTINCT in_order.order_id, NOW(), in_order.client_id, clients.client_address, 0, 0
+    FROM in_order
+    JOIN clients ON in_order.client_id = clients.client_id
+    WHERE in_order.order_id = ?
+    GROUP BY in_order.order_id, in_order.client_id
+    
+    ");
+    if (!$stmtOrderDetails) {
+        echo "Error in preparing SQL statement: " . $con->error;
+    }
+    $stmtOrderDetails->execute([$order_id]);
 
-    // Redirect to a success page or display a success message
-    header("Location: payment_success.php");
-    exit(); // Stop further execution
+    header("Location: feedback.php?order_id={$order_id}");
+    // Redirect to the feedback page with the order ID
+    //header("Location: feedback.php?order_id=$order_id");
+    exit();
+
 }
 ?>
 

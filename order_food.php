@@ -244,13 +244,17 @@
 
 <section class="order_food_section">
     <div class="alert alert-success" style="display: none;">Great! Your order has been created successfully.</div>
+    <div class="header-btn" style="margin-left:10px">
+        <a href="table-reservation.php" target="_blank" class="menu-btn">Reserve Table</a>
+    </div>
     <!-- ORDER FOOD FORM -->
     <form method="post" id="order_food_form" action="order_food.php">
         <!-- SELECT MENUS -->
         <div class="select_menus_tab order_food_tab" id="menus_tab">
             <!-- ALERT MESSAGE -->
             <div class="alert alert-danger" role="alert" style="display: none;">Please select at least one item!</div>
-            <div class="text_header"><span>1. Choice of Items</span></div>
+            <div class="text_header"><span>1. Choice of Items</span>
+            </div>
             <div>
                 <?php
                     $stmt = $con->prepare("SELECT * FROM menu_categories");

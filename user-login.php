@@ -22,10 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if a user with the provided credentials exists
     if ($user) {
         // User authenticated, set session variables
+        session_start();
         $_SESSION['client_id'] = $user['client_id'];
-        
+
         // Redirect to order_food.php
-        header("Location: order_food.php");
+        header("Location: order_food.php? client_id = {$client_id}");
         exit; // Stop further execution
     } else {
         // User not found or invalid credentials, redirect back to login page with error message

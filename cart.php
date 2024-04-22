@@ -33,6 +33,7 @@
     foreach ($order_details as $item) {
         $total_price += $item['menu_price'] * $item['quantity'];
     }
+
 ?>
 
 <!-- CART PAGE STYLE -->
@@ -218,7 +219,7 @@
             <div class="total_price d-flex justify-content-between align-items-center">
                 <h3>Total Price: <?php echo $total_price; ?>$</h3>
                 <!-- Submit button -->
-                <a href="payment.php?order_id=<?php echo $order_id; ?>" class="btn btn-success">Proceed to Payment</a>
+                <a href="payment.php?order_id=<?php echo $order_id; ?>&total_price=<?php echo $total_price; ?>" class="btn btn-success">Proceed to Payment</a>
             </div>
 
             </div>

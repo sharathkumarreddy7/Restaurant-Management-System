@@ -8,7 +8,7 @@ include 'Includes/functions/functions.php';
 include "Includes/templates/header.php";
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['client_id'])) {
     // If not logged in, redirect to login page
     header("Location: login.php");
     exit;
@@ -16,7 +16,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Retrieve user information from the database based on client_id
 $stmt = $con->prepare("SELECT * FROM clients WHERE client_id = ?");
-$stmt->execute([$_SESSION['user_id']]);
+$stmt->execute([$_SESSION['client_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Check if user exists

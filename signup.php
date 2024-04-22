@@ -24,22 +24,38 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%; /* Use 100% width for better control in alignment */
+        max-width: 400px; /* Limiting the width to make the form more readable */
     }
     .signup-option form {
-        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Optional: adds shadow for better visibility */
+        border-radius: 5px; /* Optional: rounds the corners */
+        background-color: #fff; /* Optional: ensures background is white */
     }
-    .signup-option form input {
-        margin-bottom: 10px;
+    .signup-option form input,
+    .signup-option form button {
+        width: 100%; /* Ensure inputs take full width of the form */
+        padding: 8px;
+        margin-bottom: 15px; /* Increase margin-bottom for better spacing */
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
     .signup-option form button {
         background-color: #ffc851;
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
         cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    }
+    .signup-option form button:hover {
+        background-color: #e0b042; /* Slightly darker on hover */
     }
 </style>
+
 
 <section class="signup-section">
     <h2>Sign Up</h2>
@@ -49,6 +65,8 @@
             <input type="email" name="customer_email" placeholder="Email" required>
             <input type="password" name="customer_password" placeholder="Password" required>
             <input type="text" name="customer_address" placeholder="Address" required>
+            <input type="text" name="customer_city" placeholder="City" required>
+            <input type="text" name="customer_zipcode" placeholder="zip code" required>
             <input type="number" name="customer_phone" placeholder="Phone Number" required>
             <button type="submit">Sign Up</button>
         </form>

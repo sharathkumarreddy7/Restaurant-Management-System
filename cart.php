@@ -21,7 +21,7 @@
     }
 
     // Retrieve order details from the database based on the order_id
-    $order_id = $_GET['order_id'];
+    $order_id = $_GET['order_id']; 
     // Perform database query to retrieve order details
     // Replace placeholders with actual database queries
     $stmt = $con->prepare("SELECT in_order.*, menus.menu_name, menus.menu_price FROM in_order INNER JOIN menus ON in_order.menu_id = menus.menu_id WHERE order_id = ?");
@@ -195,33 +195,32 @@
     }
 </style>
 
-
 <!-- START CART SECTION -->
-
 <section class="cart_section">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="text_header">Your Cart</h2>
-                <!-- Display order items here -->
-                <?php foreach ($order_details as $item): ?>
-                    <div class="cart_item">
-                        <div class="item_details">
-                            <h3><?php echo $item['menu_name']; ?></h3>
-                            <p>Price: <?php echo $item['menu_price']; ?>$</p>
-                            <p>Quantity: <?php echo $item['quantity']; ?></p>
-                            <!-- Modify button that redirects to order_food.php -->
-                            <a href="order_food.php" class="btn btn-primary">Modify</a>
+        <div class="row justify-content-center"> <!-- Centering the content -->
+            <div class="col-lg-8"> <!-- Adjusting the column width -->
+                <div class="card px-4 py-3"> <!-- Adding padding to the card -->
+                    <h2 class="text_header">Your Cart</h2>
+                    <!-- Display order items here -->
+                    <?php foreach ($order_details as $item): ?>
+                        <div class="cart_item">
+                            <div class="item_details">
+                                <h3><?php echo $item['menu_name']; ?></h3>
+                                <p>Price: <?php echo $item['menu_price']; ?>$</p>
+                                <p>Quantity: <?php echo $item['quantity']; ?></p>
+                                <!-- Modify button that redirects to order_food.php -->
+                                <a href="order_food.php" class="btn btn-primary">Modify</a>
+                            </div>
                         </div>
+                    <?php endforeach; ?>
+                    <!-- Total price column -->
+                    <div class="total_price d-flex justify-content-between align-items-center">
+                        <h3>Total Price: <?php echo $total_price; ?>$</h3>
+                        <!-- Submit button -->
+                        <a href="payment.php?order_id=<?php echo $order_id; ?>&total_price=<?php echo $total_price; ?>" class="btn btn-success">Proceed to Payment</a>
                     </div>
-                <?php endforeach; ?>
-              <!-- Total price column -->
-            <div class="total_price d-flex justify-content-between align-items-center">
-                <h3>Total Price: <?php echo $total_price; ?>$</h3>
-                <!-- Submit button -->
-                <a href="payment.php?order_id=<?php echo $order_id; ?>&total_price=<?php echo $total_price; ?>" class="btn btn-success">Proceed to Payment</a>
-            </div>
-
+                </div>
             </div>
         </div>
     </div>

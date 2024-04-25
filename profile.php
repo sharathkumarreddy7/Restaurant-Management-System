@@ -35,6 +35,23 @@ if (isset($_POST['logout'])) {
     header("Location: index.php");
     exit;
 }
+
+// Update user information
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Process form submission
+    $client_name = $_POST['client_name'];
+    $client_email = $_POST['client_email'];
+    $client_address = $_POST['client_address'];
+    $client_phone = $_POST['client_phone'];
+
+    // Update user details in the database
+    $stmt = $con->prepare("UPDATE clients SET client_name = ?, client_email = ?, client_address = ?, client_phone = ? WHERE client_id = ?");
+    $stmt->execute([$client_name, $client_email, $client_address, $client_phone, $_SESSION['client_id']]);
+    
+    // Redirect back to profile page after updating
+    header("Location: profile.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -85,6 +102,16 @@ if (isset($_POST['logout'])) {
         .logout-btn:hover {
             background-color: #ff6347;
         }
+        /* Style for form */
+        .edit-form {
+            margin-top: 20px;
+        }
+        .edit-form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -96,7 +123,14 @@ if (isset($_POST['logout'])) {
     <p>Address: <?php echo $user['client_address']; ?></p>
     <p>Phone: <?php echo $user['client_phone']; ?></p>
 
-    <!-- Add more profile information here as needed -->
+    <!-- Edit form -->
+    <form action="" method="post" class="edit-form">
+        <input type="text" name="client_name" placeholder="New Full Name">
+        <input type="email" name="client_email" placeholder="New Email">
+        <input type="text" name="client_address" placeholder="New Address">
+        <input type="text" name="client_phone" placeholder="New Phone">
+        <button type="submit">Update</button>
+    </form>
 
     <!-- Logout button -->
     <form action="" method="post">

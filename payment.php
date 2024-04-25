@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Include necessary files
 include "connect.php";  // Assuming this file contains your database connection
 include "Includes/functions/functions.php";
@@ -15,8 +18,8 @@ if (!isset($_GET['order_id'])) {
 $order_id = $_GET['order_id'];
 $total_price = isset($_GET['total_price']) ? htmlspecialchars($_GET['total_price']) : '0'; // Sanitize and provide default
 
-// Fetch the client_address from the database
-$stmtAddress = $con->prepare("SELECT client_address FROM clients WHERE client_id = (SELECT client_id FROM in_order WHERE order_id = ? LIMIT 1)");
+// Fetch the concatenated delivery address from the database
+$stmtAddress = $con->prepare("SELECT CONCAT(client_address, ', ', client_city, ', ', client_zipcode) AS delivery_address FROM clients WHERE client_id = (SELECT client_id FROM in_order WHERE order_id = ? LIMIT 1)");
 $stmtAddress->execute([$order_id]);
 $delivery_address = $stmtAddress->fetchColumn();
 
@@ -30,7 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
     $delivery_option = isset($_POST['delivery_option']) ? $_POST['delivery_option'] : 'delivery';
 
     // Insert payment details into the Payments table
-    $stmtPayment = $con->prepare("INSERT INTO Payments (Time, Amount, Order_ID) VALUES (NOW(), ?, ?)");
+    // Insert payment details into the Payments table with formatted current date and time
+    $stmtPayment = $con->prepare("INSERT INTO payment (Time, Amount, Order_ID) VALUES (NOW(), ?, ?)");
     if (!$stmtPayment) {
         echo "Error in preparing SQL statement: " . $con->error;
     }
@@ -44,10 +48,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
     }
     $stmtOrderDetails->execute([$delivery_option === 'takeaway' ? 'Vincent Pizza, 1580 Boone Street, Corpus Christi, TX, 78476 - USA' : $delivery_address, $order_id]);
 
+    // Check if insertion was successful
+    if ($stmtOrderDetails->rowCount() > 0) {
+        echo "Order details inserted successfully!";
+    } else {
+        echo "Failed to insert order details!";
+    }
+
+    // Redirect to feedback.php
     header("Location: feedback.php?order_id={$order_id}");
     exit();
 }
 ?>
+
 
 <!-- Payment Form -->
 <div class="container p-0">
@@ -56,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
         <form method="post" action="">
             <div>
                 <label><input type="radio" name="delivery_option" value="delivery" checked="checked" onclick="showAddress('<?php echo $delivery_address; ?>')"> Delivery to the given Address</label><br>
-                <label><input type="radio" name="delivery_option" value="takeaway" onclick="showAddress('Vincent Pizza, 1580 Boone Street, Corpus Christi, TX, 78476 - USA')"> Take-away from restaurant</label>
+                <label><input type="radio" name="delivery_option" value="takeaway" onclick="showAddress('Vincent Pizza')"> Take-away from restaurant</label>
             </div>
             <div id="addressContainer" style="display: none;">
                 <p id="address"></p>

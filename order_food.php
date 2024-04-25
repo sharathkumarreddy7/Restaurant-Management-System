@@ -244,9 +244,6 @@
 
 <section class="order_food_section">
     <div class="alert alert-success" style="display: none;">Great! Your order has been created successfully.</div>
-    <div class="header-btn" style="margin-left:10px">
-        <a href="table-reservation.php" target="_blank" class="menu-btn">Reserve Table</a>
-    </div>
     <!-- ORDER FOOD FORM -->
     <form method="post" id="order_food_form" action="order_food.php">
         <!-- SELECT MENUS -->

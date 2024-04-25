@@ -51,37 +51,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+<style type = text/css>
 
-<div class="container">
-    <h2>Thank You for Your Order!</h2>
-    <p>Your order has been successfully placed. Below are the details:</p>
-    <form action="feedback.php?order_id=<?php echo $order_id; ?>" method="post">
-        <ul>
-            <?php foreach ($order_details as $item): ?>
-            <li>
-                <?php echo htmlspecialchars($item['menu_name']); ?> - Quantity: <?php echo $item['quantity']; ?> - Unit Price: <?php echo $item['menu_price']; ?>$
-                <input type="hidden" name="menu_id[]" value="<?php echo $item['menu_id']; ?>">
-                <div>
-                    <label for="rating">Rating (1-5):</label>
-                    <input type="number" name="rating[]" min="1" max="5" required>
-                    <label for="comment">Comment:</label>
-                    <input type="text" name="comment[]">
-                </div>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-        <button type="submit">Submit Feedback</button>
-    </form>
-    <p>Total Price: <?php echo $total_price; ?>$</p>
-</div>
+.feedback-container {
+    margin: 50px auto;
+    max-width: 800px;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
 
-<div class="container">
-    <div class="payment-confirmation">
-        <h3>Payment Confirmation</h3>
-        <p>Your payment has been successfully processed.</p>
+.feedback-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.feedback-message {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.feedback-fields label {
+    font-size: 16px;
+}
+
+.feedback-fields input[type="number"],
+.feedback-fields input[type="text"] {
+    font-size: 16px;
+    width: 100px;
+    margin-right: 10px;
+}
+
+.feedback-buttons {
+    margin-top: 20px;
+}
+
+.feedback-buttons button,
+.feedback-buttons a {
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+.feedback-total {
+    font-size: 18px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+
+</style>
+
+<div class="container feedback-container">
+    <div class="feedback-content">
+        <h2 class="feedback-title">Thank You for Your Order!</h2>
+        <p class="feedback-message">Your order has been successfully placed. Below are the details:</p>
+        <p class="feedback-total">Total Price: <?php echo $total_price; ?>$</p>
+        <form action="feedback.php?order_id=<?php echo $order_id; ?>" method="post">
+            <ul>
+                <?php foreach ($order_details as $item): ?>
+                <li>
+                    <?php echo htmlspecialchars($item['menu_name']); ?> - Quantity: <?php echo $item['quantity']; ?> - Unit Price: <?php echo $item['menu_price']; ?>$
+                    <input type="hidden" name="menu_id[]" value="<?php echo $item['menu_id']; ?>">
+                    <div class="feedback-fields">
+                        <label for="rating">Rating (1-5):</label>
+                        <input type="number" name="rating[]" min="1" max="5" required>
+                        <label for="comment">Comment:</label>
+                        <input type="text" name="comment[]">
+                    </div>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+            <div class="feedback-buttons">
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                <a href="index.php" class="btn btn-secondary">Skip Feedback</a>
+            </div>
+        </form>
     </div>
-    <p>Please wait for your order to be confirmed. Thank you for choosing us!</p>
 </div>
+
 
 <!-- WIDGET SECTION / FOOTER -->
 

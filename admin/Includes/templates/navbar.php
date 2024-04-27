@@ -12,8 +12,8 @@
                 <li id="user-btn" class="main-li dropdown" style="background:none;">
                     <div class="dropdown show">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user"></i>
-                            <span class="username">Lock and Key</span>
+                            <i class="fas fa-user-shield"></i>
+                            <span class="username">Account</span>
                             <b class="caret"></b>
                         </a>
                         <!-- DROPDOWN MENU -->
@@ -22,12 +22,6 @@
                                 <i class="fas fa-user-cog"></i>
                                 <span style="padding-left:6px">
                                     Edit Profile
-                                </span>
-                            </a>
-                            <a class="dropdown-item" href="website-settings.php">
-                                <i class="fas fa-cogs"></i>
-                                <span style="padding-left:6px">
-                                    Website Settings
                                 </span>
                             </a>
                             <div class="dropdown-divider"></div>
@@ -43,7 +37,7 @@
                 <li class="main-li webpage-btn">
                     <a class="nav-item-button " href="../" target="_blank">
                         <i class="fas fa-eye"></i>
-                        <span>View website</span>
+                        <span>Go to website</span>
                     </a>
                 </li>
             </ul>
@@ -70,49 +64,37 @@
 
                 <div class="dropdown-divider"></div> 
 
-                <div class="sidenav-menu-heading">
-                    Menus
-                </div>
-
-                <div class="dropdown-divider"></div>
-
-                <li>
-                    <a href="menu_categories.php" class="a-verMenu menu_categories_link">
-                        <i class="fas fa-list icon-ver"></i>
-                        <span style="padding-left:6px;">Menu Categories</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="menus.php" class="a-verMenu menus_link">
-                        <i class="fas fa-utensils icon-ver"></i>
-                        <span style="padding-left:6px;">Menus</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gallery.php" class="a-verMenu gallery_link">
-                        <i class="far fa-image icon-ver"></i>
-                        <span style="padding-left:6px;">Gallery</span>
-                    </a>
-                </li>
-                
-                <div class="dropdown-divider"></div>
                 
                 <div class="sidenav-menu-heading">
-                    Clients & Staff
+                    Webiste users
                 </div>
                 
                 <div class="dropdown-divider"></div>
                 
                 <li>
-                    <a href="clients.php" class="a-verMenu clients_link">
+                    <a href="staff.php" class="a-verMenu inventory_link">
+                        <i class="far fa-address-book icon-ver"></i>
+                        <span style="padding-left:6px;">Staff</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="manager.php" class="a-verMenu supplier_link">
                         <i class="far fa-address-card icon-ver"></i>
-                        <span style="padding-left:6px;">Clients</span>
+                        <span style="padding-left:6px;">Manager</span>
                     </a>
                 </li>
+                <div class="dropdown-divider"></div>
+                
+                <div class="sidenav-menu-heading">
+                    Website Details
+                </div>
+                
+                <div class="dropdown-divider"></div>
+                
                 <li>
-                    <a href="users.php" class="a-verMenu users_link">
-                        <i class="far fa-user icon-ver"></i>
-                        <span style="padding-left:6px;">Users</span>
+                    <a href="website-settings.php" class="a-verMenu clients_link">
+                        <i class="far fa-cogs icon-ver"></i>
+                        <span style="padding-left:6px;">Website-Settings</span>
                     </a>
                 </li>
                 

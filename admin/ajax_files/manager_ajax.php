@@ -5,10 +5,10 @@
 
 	if(isset($_POST['do_']) && $_POST['do_'] == "Delete")
 	{
-		$menu_id = $_POST['menu_id'];
+		$user_id = $_POST['user_id'];
 
-        $stmt = $con->prepare("DELETE from menus where menu_id = ?");
-        $stmt->execute(array($menu_id));
+        $stmt = $con->prepare("DELETE from users where user_id = ?");
+        $stmt->execute(array($user_id));
 	}
 
 ?>

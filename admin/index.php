@@ -25,14 +25,15 @@
 				//Check if user click on the submit button
 				if(isset($_POST['admin_login']))
 				{
-					$username = test_input($_POST['username']);
+					$admin_username = test_input($_POST['username']);
 					$password = test_input($_POST['password']);
 					$hashedPass = sha1($password);
+					$user_role="admin";
 
 					//Check if User Exist In database
 
-					$stmt = $con->prepare("Select user_id, username, password from users where username = ? and password = ?");
-					$stmt->execute(array($username,$hashedPass));
+					$stmt = $con->prepare("Select user_id, username, password from users where username = ? and password = ? and user_role=?");
+					$stmt->execute(array($admin_username,$hashedPass,$user_role));
 					$row = $stmt->fetch();
 					$count = $stmt->rowCount();
 
@@ -41,7 +42,7 @@
 					if($count > 0)
 					{
 
-						$_SESSION['username_restaurant_qRewacvAqzA'] = $username;
+						$_SESSION['username_restaurant_qRewacvAqzA'] = $admin_username;
 						$_SESSION['password_restaurant_qRewacvAqzA'] = $password;
 						$_SESSION['userid_restaurant_qRewacvAqzA'] = $row['user_id'];
 						header('Location: dashboard.php');

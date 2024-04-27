@@ -2,7 +2,7 @@
     ob_start();
 	session_start();
 
-	$pageTitle = 'Users';
+	$pageTitle = 'Profile';
 
 	if(isset($_SESSION['username_restaurant_qRewacvAqzA']) && isset($_SESSION['password_restaurant_qRewacvAqzA']))
 	{
@@ -35,63 +35,67 @@
             if(isset($_GET['do']) && in_array(htmlspecialchars($_GET['do']), array('Add','Edit')))
                 $do = $_GET['do'];
             else
-                $do = 'Manage';
+                $do = 'Edit';
 
             if($do == "Manage")
             {
-                $stmt = $con->prepare("SELECT * FROM users");
-                $stmt->execute();
+                $user_id = (isset($_GET['user_id']) && is_numeric($_GET['user_id']))?intval($_GET['user_id']):0;
+                $stmt = $con->prepare("SELECT * FROM users WHERE user_id=?");
+                $stmt->execute(array($user_id));
                 $users = $stmt->fetchAll();
+    
+                ?>
+                    <div class="card">
+                        <div class="card-header">
+                            <?php echo $pageTitle; ?>
+                        </div>
+                        <div class="card-body">
+    
+                            <!-- ADMIN TABLE -->
+    
+                            <table class="table table-bordered staff-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Number</th>
+                                        <th scope="col">Manage</th>
 
-            ?>
-                <div class="card">
-                    <div class="card-header">
-                        <?php echo $pageTitle; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        foreach($users as $users)
+                                        {
+                                            echo "<tr>";
+                                                echo "<td>";
+                                                    echo $users['username'];
+                                                echo "</td>";
+                                                echo "<td>";
+                                                    echo $users['email'];
+                                                echo "</td>";
+                                                echo "<td>";
+                                                    echo $users['user_number'];
+                                                echo "</td>";
+                                                echo "<td>";
+                                                    echo "<button class='btn btn-success btn-sm rounded-0'>";
+                                                        echo "<a href='users.php?do=Edit&user_id=".$users['user_id']."' style='color: white;'";
+                                                        echo "<i class='fa fa-edit'></i>";
+                                                        echo "</a>";
+                                                    echo "</button>";
+                                                echo "</td>";
+                                            echo "</tr>";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>  
+                        </div>
                     </div>
-                    <div class="card-body">
+                <?php
+                }
 
-                        <!-- USERS TABLE -->
-
-                        <table class="table table-bordered users-table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Username</th>
-                                    <th scope="col">E-mail</th>
-                                    <th scope="col">Full Name</th>
-                                    <th scope="col">Manage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    foreach($users as $user)
-                                    {
-                                        echo "<tr>";
-                                            echo "<td>";
-                                                echo $user['username'];
-                                            echo "</td>";
-                                            echo "<td>";
-                                                echo $user['email'];
-                                            echo "</td>";
-                                            echo "<td>";
-                                                echo $user['full_name'];
-                                            echo "</td>";
-                                            echo "<td>";
-                                                echo "<button class='btn btn-success btn-sm rounded-0'>";
-                                                    echo "<a href='users.php?do=Edit&user_id=".$user['user_id']."' style='color: white;'";
-                                                    echo "<i class='fa fa-edit'></i>";
-                                                    echo "</a>";
-                                                echo "</button>";
-                                            echo "</td>";
-                                        echo "</tr>";
-                                    }
-                                ?>
-                            </tbody>
-                        </table>  
-                    </div>
-                </div>
-            <?php
-            }
-            # Edit the user details
+            
+            # Edit the staff details
             elseif($do == 'Edit')
             {
                 $user_id = (isset($_GET['user_id']) && is_numeric($_GET['user_id']))?intval($_GET['user_id']):0;
@@ -100,7 +104,7 @@
                 {
                     $stmt = $con->prepare("Select * from users where user_id = ?");
                     $stmt->execute(array($user_id));
-                    $user = $stmt->fetch();
+                    $users = $stmt->fetch();
                     $count = $stmt->rowCount();
                     if($count > 0)
                     {
@@ -108,14 +112,14 @@
 
                         <div class="card">
                             <div class="card-header">
-                                Edit User
+                                Edit Profile
                             </div>
                             <div class="card-body">
-                                <form method="POST" class="menu_form" action="users.php?do=Edit&user_id=<?php echo $user['user_id'] ?>">
+                                <form method="POST" class="menu_form" action="users.php?do=Edit&user_id=<?php echo $users['user_id'] ?>">
                                     <div class="panel-X">
                                         <div class="panel-header-X">
                                             <div class="main-title">
-                                                <?php echo $user['full_name']; ?>
+                                                <?php echo $users['username']; ?>
                                             </div>
                                         </div>
                                         <div class="save-header-X">
@@ -123,7 +127,7 @@
                                                 <div class="icon">
                                                     <i class="fa fa-sliders-h"></i>
                                                 </div>
-                                                <div class="title-container">User details</div>
+                                                <div class="title-container">Details</div>
                                             </div>
                                             <div class="button-controls">
                                                 <button type="submit" name="edit_user_sbmt" class="btn btn-primary">Save</button>
@@ -133,13 +137,13 @@
                                                 
                                             <!-- User ID -->
 
-                                            <input type="hidden" name="user_id" value="<?php echo $user['user_id'];?>" >
+                                            <input type="hidden" name="user_id" value="<?php echo $users['user_id'];?>" >
 
-                                            <!-- Username INPUT -->
+                                            <!-- Staff_Name INPUT -->
 
                                             <div class="form-group">
-                                                <label for="user_name">Username</label>
-                                                <input type="text" class="form-control" value="<?php echo $user['username'] ?>" placeholder="Username" name="user_name">
+                                                <label for="username">Username</label>
+                                                <input type="text" class="form-control" value="<?php echo $users['username'] ?>" placeholder="Username" name="user_name">
                                                 <?php
                                                     $flag_edit_user_form = 0;
 
@@ -158,20 +162,32 @@
                                                     }
                                                 ?>
                                             </div>
-                                        
-                                            <!-- FULL NAME INPUT -->
 
+
+                                            <!-- Staff Number INPUT -->
                                             <div class="form-group">
-                                                <label for="full_name">Full Name</label>
-                                                <input type="text" class="form-control" value="<?php echo $user['full_name'] ?>" placeholder="Full Name" name="full_name">
+                                                <label for="user_number">Number</label>
+                                                <input type="text" class="form-control" value="<?php echo $users['user_number'] ?>" placeholder="(000)-000-000" name="user_number">
+                                                
                                                 <?php
+
                                                     if(isset($_POST['edit_user_sbmt']))
                                                     {
-                                                        if(empty(test_input($_POST['full_name'])))
+                                                        if(empty(test_input($_POST['user_number'])))
                                                         {
                                                             ?>
                                                                 <div class="invalid-feedback" style="display: block;">
-                                                                    Full name is required.
+                                                                    Number is required.
+                                                                </div>
+                                                            <?php
+
+                                                            $flag_edit_menu_form = 1;
+                                                        }
+                                                        elseif(!filter_var($_POST['user_number'], FILTER_VALIDATE_EMAIL))
+                                                        {
+                                                            ?>
+                                                                <div class="invalid-feedback" style="display: block;">
+                                                                    Invalid number.
                                                                 </div>
                                                             <?php
 
@@ -180,27 +196,27 @@
                                                     }
                                                 ?>
                                             </div>
-                                            
-                                            <!-- User Email INPUT -->
+                                                                                    
+                                            <!-- Staff Email INPUT -->
 
                                             <div class="form-group">
-                                                <label for="user_email">User E-mail</label>
-                                                <input type="email" class="form-control" value="<?php echo $user['email'] ?>" placeholder="User Email" name="user_email">
+                                                <label for="email">E-mail</label>
+                                                <input type="email" class="form-control" value="<?php echo $users['email'] ?>" placeholder="User Email" name="email">
                                                 <?php
 
                                                     if(isset($_POST['edit_user_sbmt']))
                                                     {
-                                                        if(empty(test_input($_POST['user_email'])))
+                                                        if(empty(test_input($_POST['email'])))
                                                         {
                                                             ?>
                                                                 <div class="invalid-feedback" style="display: block;">
-                                                                    User E-mail is required.
+                                                                    E-mail is required.
                                                                 </div>
                                                             <?php
 
                                                             $flag_edit_menu_form = 1;
                                                         }
-                                                        elseif(!filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL))
+                                                        elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
                                                         {
                                                             ?>
                                                                 <div class="invalid-feedback" style="display: block;">
@@ -214,16 +230,17 @@
                                                 ?>
                                             </div>
 
-                                            <!-- User Password INPUT -->
+
+                                            <!-- Staff_Password INPUT -->
 
                                             <div class="form-group">
-                                                <label for="user_password">User Password</label>
-                                                <input type="password" class="form-control" placeholder="Change password" name="user_password">
+                                                <label for="password">Password</label>
+                                                <input type="password" class="form-control" name="password">
                                                 <?php
 
                                                     if(isset($_POST['edit_user_sbmt']))
                                                     {
-                                                        if(!empty($_POST['user_password']) and strlen($_POST['user_password']) < 8)
+                                                        if(!empty($_POST['password']) and strlen($_POST['password']) < 8)
                                                         {
                                                             ?>
                                                                 <div class="invalid-feedback" style="display: block;">
@@ -237,6 +254,7 @@
                                                 ?>
                                             </div>
 
+
                                         </div>
                                     </div>
                                 </form>
@@ -245,22 +263,23 @@
 
                         <?php
 
-                        /*** EDIT MENU ***/
+                        /*** EDIT DETAILS ***/
 
                         if(isset($_POST['edit_user_sbmt']) && $_SERVER['REQUEST_METHOD'] == 'POST' && $flag_edit_user_form == 0)
                         {
                             $user_id = test_input($_POST['user_id']);
                             $user_name = test_input($_POST['user_name']);
-                            $user_fullname = $_POST['full_name'];
-                            $user_email = test_input($_POST['user_email']);
-                            $user_password = $_POST['user_password'];
+                            $user_number = test_input($_POST['user_number']);
+                            $email = test_input($_POST['email']);
+                            $password = $_POST['password'];
+                            $hashedPass = sha1($password);
 
-                            if(empty($user_password))
+                            if(empty($password))
                             {
                                 try
                                 {
-                                    $stmt = $con->prepare("update users  set username = ?, email = ?, full_name = ? where user_id = ? ");
-                                    $stmt->execute(array($user_name,$user_email,$user_fullname,$user_id));
+                                    $stmt = $con->prepare("update users  set username = ?, user_number = ?, email = ?, password = ? where user_id = ? ");
+                                    $stmt->execute(array($user_name,$user_number,$email,$hashedPass,$user_id));
                                     
                                     ?> 
                                         <!-- SUCCESS MESSAGE -->
@@ -282,11 +301,11 @@
                             }
                             else
                             {
-                                $user_password = sha1($user_password);
+                                $password = sha1($password);
                                 try
                                 {
-                                    $stmt = $con->prepare("update users  set username = ?, email = ?, full_name = ?, password = ? where user_id = ? ");
-                                    $stmt->execute(array($user_name,$user_email,$user_fullname,$user_password,$user_id));
+                                    $stmt = $con->prepare("update users  set username = ?, user_number = ?, email = ?, password = ? where user_id = ? ");
+                                    $stmt->execute(array($user_name,$user_number,$email,$password,$user_id));
                                     
                                     ?> 
                                         <!-- SUCCESS MESSAGE -->
@@ -311,12 +330,12 @@
                     }
                     else
                     {
-                        header('Location: menus.php');
+                        header('Location: dashboard.php');
                     }
                 }
                 else
                 {
-                    header('Location: menus.php');
+                    header('Location: dashboard.php');
                 }
             }
 

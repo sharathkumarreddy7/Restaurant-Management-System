@@ -1,13 +1,11 @@
 <?php
-	//Start Session
-	session_start();
+// Start the session
+session_start();
 
-	//Unset variables of session
-	session_unset();
+// Destroy the session
+session_destroy();
 
-	//Destroy Session
-	session_destroy();
-	
-	header('Location: index.php');
-	exit();
+// Redirect to the homepage
+header("Location: index.php");
+exit();
 ?>

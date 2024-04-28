@@ -27,9 +27,42 @@ session_start();
                     <div class="header-btn" style="margin-left:10px">
                         <a href="table-reservation.php" target="_blank" class="menu-btn">Reserve Table</a>
                     </div>
-                    <div class="header-btn" style="margin-left:10px">
-                        <a href="profile.php" target="_blank" class="menu-btn">Profile</a>
+                    <li id="user-btn" class="main-li dropdown" style="margin-left:10px;background:none;">
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user"></i>
+                            <span class="username">Profile</span>
+                            <b class="caret"></b>
+                        </a>
+                        <!-- DROPDOWN MENU -->
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="profile.php">
+                                <i class="fas fa-user-cog"></i>
+                                <span style="padding-left:6px">
+                                    Edit Profile
+                                </span>
+                            </a>
+                            <a class="dropdown-item" href="my_orders.php">
+                                <i class="fa fa-list"></i>
+                                <span style="padding-left:6px">
+                                    My Orders
+                                </span>
+                            </a>   
+                            <a class="dropdown-item" href="myreservations.php">
+                                <i class="fas fa-concierge-bell"></i>
+                                <span style="padding-left:6px">
+                                    My Reservations
+                                </span>
+                            </a>                          
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="logout.php">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span style="padding-left:6px">Logout</span>
+                            </a>
+                        </div>
                     </div>
+                </li>
+
                 <?php else: ?>
                     <!-- Display if no client is logged in -->
                     <div class="header-btn" style="margin-left:10px">

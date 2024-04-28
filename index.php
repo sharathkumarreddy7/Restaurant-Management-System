@@ -87,12 +87,9 @@
 	                    <img src="Design/images/quality_food_img.png" >
 	                    <div class="caption">
 	                        <h3>
-	                            Quality Foods
+	                            Quality
 	                        </h3>
-	                        <p>
-	                        	Sit amet, consectetur adipiscing elit quisque eget maximus velit, 
-	                        	non eleifend libero curabitur dapibus mauris sed leo cursus aliquetcras suscipit.
-	                        </p>
+	                        <p>	Know the real deal about your meal  </p>
 	                    </div>
 	                </div>
 				</div>
@@ -101,11 +98,9 @@
 	                    <img src="Design/images/fast_delivery_img.png" >
 	                    <div class="caption">
 	                        <h3>
-	                            Quality Foods
+	                            Fast Delivery
 	                        </h3>
-	                        <p>
-	                        	Sit amet, consectetur adipiscing elit quisque eget maximus velit, 
-	                        	non eleifend libero curabitur dapibus mauris sed leo cursus aliquetcras suscipit.
+	                        <p> Freshness delivered on Time
 	                        </p>
 	                    </div>
 	                </div>
@@ -115,11 +110,10 @@
 	                    <img src="Design/images/original_taste_img.png" >
 	                    <div class="caption">
 	                        <h3>
-	                            Quality Foods
+	                            Yummy
 	                        </h3>
 	                        <p>
-	                        	Sit amet, consectetur adipiscing elit quisque eget maximus velit, 
-	                        	non eleifend libero curabitur dapibus mauris sed leo cursus aliquetcras suscipit.
+	                        	Delight in every bite
 	                        </p>
 	                    </div>
 	                </div>

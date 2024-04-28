@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Include necessary files
 include "connect.php"; // Assuming this file contains your database connection
 include "Includes/functions/functions.php";
@@ -50,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<div>Error submitting feedback: " . $e->getMessage() . "</div>";
     }
 }
+ob_end_flush();
 ?>
 <style type = text/css>
 

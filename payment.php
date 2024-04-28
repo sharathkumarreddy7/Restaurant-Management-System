@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -59,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
     header("Location: feedback.php?order_id={$order_id}");
     exit();
 }
+ob_end_flush();
+
 ?>
 
 

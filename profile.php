@@ -1,11 +1,36 @@
 <?php
 // Start session
+ob_start();
 session_start();
+
+$pageTitle = 'Profile';
 
 // Include the database connection file
 include "connect.php";
 include 'Includes/functions/functions.php';
 include "Includes/templates/header.php";
+include 'Includes/templates/navbar.php';
+?>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+
+    var vertical_staff = document.getElementById("vertical-menu");
+
+
+    var current = vertical_staff.getElementsByClassName("active_link");
+
+    if(current.length > 0)
+    {
+        current[0].classList.remove("active_link");   
+    }
+    
+    vertical_staff.getElementsByClassName('staff_link')[0].className += " active_link";
+
+</script>
+
+<?php
 
 // Check if user is logged in
 if (!isset($_SESSION['client_id'])) {
@@ -37,106 +62,239 @@ if (isset($_POST['logout'])) {
 }
 
 // Update user information
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Process form submission
-    $client_name = $_POST['client_name'];
-    $client_email = $_POST['client_email'];
-    $client_address = $_POST['client_address'];
-    $client_phone = $_POST['client_phone'];
+if(isset($_POST['edit_user_sbmt']) && $_SERVER['REQUEST_METHOD'] == 'POST')
+{
+    $client_id = test_input($_POST['client_id']);
+    $client_name = test_input($_POST['client_name']);
+    $client_phone = test_input($_POST['client_phone']);
+    $client_email = test_input($_POST['client_email']);
+    $client_address = test_input($_POST['client_address']);
+    $client_city = test_input($_POST['client_city']);
+    $client_zipcode = test_input($_POST['client_zipcode']);
+    $client_password = $_POST['client_password'];
+    $hashedPass = sha1($client_password);
 
-    // Update user details in the database
-    $stmt = $con->prepare("UPDATE clients SET client_name = ?, client_email = ?, client_address = ?, client_phone = ? WHERE client_id = ?");
-    $stmt->execute([$client_name, $client_email, $client_address, $client_phone, $_SESSION['client_id']]);
-    
-    // Redirect back to profile page after updating
-    header("Location: profile.php");
-    exit;
+    try
+    {
+        $stmt = $con->prepare("update clients  set client_name = ?, client_phone = ?, client_email = ?, client_address=?, client_city=?,client_zipcode=?,client_password=? where client_id = ? ");
+        $stmt->execute(array($client_name,$client_phone,$client_email,$client_address,$client_city,$client_zipcode,$hashedPass,$client_id));
+        
+        ?> 
+                                        <!-- SUCCESS MESSAGE -->
+            <script type="text/javascript">
+            swal("Edit User","Profile has been updated successfully", "success").then((value) => 
+                {
+                    window.location.replace("profile.php");
+                });
+            </script>
+
+        <?php
+
+    }
+    catch(Exception $e)
+    {
+        echo 'Error occurred: ' .$e->getMessage();
+    }
 }
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <style>
-        /* Styles for profile section */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f3f3;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-        }
-        .container h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .container p {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        .logout-btn {
-            background-color: #ff7f50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-        }
-        .logout-btn:hover {
-            background-color: #ff6347;
-        }
-        /* Style for form */
-        .edit-form {
-            margin-top: 20px;
-        }
-        .edit-form input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-    </style>
-</head>
-<body>
 
-<div class="container">
-    <h2>User Profile</h2>
-    <p>Full Name: <?php echo $user['client_name']; ?></p>
-    <p>Email: <?php echo $user['client_email']; ?></p>
-    <p>Address: <?php echo $user['client_address']; ?></p>
-    <p>Phone: <?php echo $user['client_phone']; ?></p>
 
-    <!-- Edit form -->
-    <form action="" method="post" class="edit-form">
-        <input type="text" name="client_name" placeholder="New Full Name">
-        <input type="email" name="client_email" placeholder="New Email">
-        <input type="text" name="client_address" placeholder="New Address">
-        <input type="text" name="client_phone" placeholder="New Phone">
-        <button type="submit">Update</button>
-    </form>
+    <div class="card">
+        <div class="card-header">
+            Edit Profile
+        </div>
+        <div class="card-body">
+            <form method="POST" class="menu_form" action="profile.php?do=Edit&client_id=<?php echo $user['client_id'] ?>">
+                <div class="panel-X">
+                    <div class="panel-header-X">
+                    </div>
 
-    <!-- Logout button -->
-    <form action="" method="post">
-        <button class="logout-btn" type="submit" name="logout">Logout</button>
-    </form>
-</div>
+                    <div class="panel-body-X">                         
+                                            <!-- User ID -->
 
-</body>
-</html>
+                        <input type="hidden" name="client_id" value="<?php echo $user['client_id'];?>" >
+
+                        <div class="form-group">
+                            <label for="client_email">E-mail</label>
+                            <input type="email" class="form-control" value="<?php echo $user['client_email'] ?>" placeholder="User Email" name="client_email">
+                            <?php
+
+                                if(isset($_POST['edit_user_sbmt']))
+                                {
+                                    if(empty(test_input($_POST['client_email'])))
+                                    {
+                                        ?>
+                                            <div class="invalid-feedback" style="display: block;">
+                                                E-mail is required.
+                                            </div>
+                                        <?php
+
+                                        $flag_edit_user_form = 1;
+                                    }
+                                    elseif(!filter_var($_POST['client_email'], FILTER_VALIDATE_EMAIL))
+                                    {
+                                        ?>
+                                            <div class="invalid-feedback" style="display: block;">
+                                                Invalid e-mail.
+                                            </div>
+                                        <?php
+
+                                        $flag_edit_user_form = 1;
+                                    }
+                                }
+                            ?>
+                        </div>
+                                            <!-- Staff_Name INPUT -->
+
+                        <div class="form-group">
+                            <label for="client_name">Name</label>
+                            <input type="text" class="form-control" value="<?php echo $user['client_name'] ?>" placeholder="Name" name="client_name">
+                            <?php
+                                $flag_edit_user_form = 0;
+
+                                if(isset($_POST['edit_user_sbmt']))
+                                {
+                                    if(empty(test_input($_POST['client_name'])))
+                                        {
+                                            ?>
+                                                <div class="invalid-feedback" style="display: block;">
+                                                    Name is required.
+                                                </div>
+                                            <?php
+
+                                            $flag_edit_user_form = 1;
+                                        }
+                                }
+                            ?>
+                        </div>
+
+
+                                            <!-- Staff Number INPUT -->
+                        <div class="form-group">
+                            <label for="client_phone">Phone Number</label>
+                            <input type="text" class="form-control" value="<?php echo $user['client_phone'] ?>" placeholder="(000)-000-000" name="client_phone">
+                                                
+                            <?php
+
+                            if(isset($_POST['edit_user_sbmt']))
+                            {
+                                if(empty(test_input($_POST['client_phone'])))
+                                {
+                                    ?>
+                                        <div class="invalid-feedback" style="display: block;">
+                                            Number is required.
+                                        </div>
+                                    <?php
+
+                                    $flag_edit_user_form = 1;
+                                }
+                            }
+                            ?>
+                        </div>
+                                 
+
+
+                                            <!-- Staff_Password INPUT -->
+
+                        <div class="form-group">
+                            <label for="client_password">Password</label>
+                            <input type="password" class="form-control" name="client_password">
+                            <?php
+
+                                if(isset($_POST['edit_user_sbmt']))
+                                {
+                                    if(!empty($_POST['client_password']) and strlen($_POST['client_password']) < 8)
+                                    {
+                                        ?>
+                                            <div class="invalid-feedback" style="display: block;">
+                                                Password length must be at least 8 characters.
+                                            </div>
+                                        <?php
+
+                                        $flag_edit_user_form = 1;
+                                    }
+                                }
+                            ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_address">Street Address</label>
+                            <input type="text" class="form-control" value="<?php echo $user['client_address'] ?>" placeholder="St. Address" name="client_address">
+                            <?php
+                                $flag_edit_user_form = 0;
+
+                                if(isset($_POST['edit_user_sbmt']))
+                                {
+                                    if(empty(test_input($_POST['client_address'])))
+                                        {
+                                            ?>
+                                                <div class="invalid-feedback" style="display: block;">
+                                                    Street Address is required.
+                                                </div>
+                                            <?php
+
+                                            $flag_edit_user_form = 1;
+                                        }
+                                }
+                            ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_city">City</label>
+                            <input type="text" class="form-control" value="<?php echo $user['client_city'] ?>" placeholder="City" name="client_city">
+                            <?php
+                                $flag_edit_user_form = 0;
+
+                                if(isset($_POST['edit_user_sbmt']))
+                                {
+                                    if(empty(test_input($_POST['client_city'])))
+                                        {
+                                            ?>
+                                                <div class="invalid-feedback" style="display: block;">
+                                                    City is required.
+                                                </div>
+                                            <?php
+
+                                            $flag_edit_user_form = 1;
+                                        }
+                                }
+                            ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_zipcode">Zip Code</label>
+                            <input type="number" class="form-control" value="<?php echo $user['client_zipcode'] ?>" placeholder="Zip Code" name="client_zipcode">
+                            <?php
+                                $flag_edit_user_form = 0;
+
+                                if(isset($_POST['edit_user_sbmt']))
+                                {
+                                    if(empty(test_input($_POST['client_zipcode'])))
+                                        {
+                                            ?>
+                                                <div class="invalid-feedback" style="display: block;">
+                                                    Zip Code is required.
+                                                </div>
+                                            <?php
+
+                                            $flag_edit_user_form = 1;
+                                        }
+                                }
+                            ?>
+                        </div>
+                        <div class="button-controls">
+                            <button type="submit" name="edit_user_sbmt" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <?php
+    
+    include 'Includes/templates/footer.php';
+?>
+
+
+
+
+

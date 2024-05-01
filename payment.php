@@ -64,7 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
 ob_end_flush();
 
 ?>
-
+<style type="text/css">
+    body {
+        background: url('Design/images/home_bg.jpg') center center fixed;
+        background-size: cover;
+    }
+</style>   
 
 <!-- Payment Form -->
 <div class="container p-0">

@@ -12,6 +12,8 @@ if (!isset($_GET['order_id'])) {
     exit(); // Stop further execution
 }
 
+
+
 $order_id = $_GET['order_id'];
 
 // Fetch order details along with the menu prices
@@ -54,7 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ob_end_flush();
 ?>
 <style type = text/css>
-
+    body {
+        background: url('Design/images/home_bg.jpg') center center fixed;
+        background-size: cover;
+    }
 .feedback-container {
     margin: 50px auto;
     max-width: 800px;

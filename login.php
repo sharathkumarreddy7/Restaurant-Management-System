@@ -9,6 +9,10 @@
 ?>
 
 <style type="text/css">
+    body {
+        background: url('Design/images/home_bg.jpg') center center fixed;
+        background-size: cover;
+    }
     /* Styles for login section */
     .login-section {
         display: flex;
@@ -17,9 +21,17 @@
         justify-content: center;
         min-height: calc(100vh - 150px); /* Subtracting header and footer heights */
     }
-    .login-section h2 {
-        margin-bottom: 20px;
-    }
+    .login-section h2 
+		{
+            margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-top: 22px;
+    text-transform: capitalize;
+    color: #ffffff;
+		}
+
     .login-option {
         display: flex;
         flex-direction: column;
@@ -82,7 +94,7 @@
             <input type="password" name="user_password" placeholder="Password" required>
             <button type="submit">Customer Login</button>
         </form>
-        <p>Don't have an account? <a href="signup.php">Sign Up</a></p>
+        <p style="color: white;">Don't have an account? <a href="signup.php">Sign Up</a></p>
     </div>
     <div class="login-buttons">
         <a href="staff/index.php">Staff Login</a>

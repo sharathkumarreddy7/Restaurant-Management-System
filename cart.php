@@ -39,7 +39,8 @@
 <!-- CART PAGE STYLE -->
 <style type="text/css">
     body {
-        background: #f7f7f7;
+        background: url('Design/images/home_bg.jpg') center center fixed;
+        background-size: cover;
     }
 
     .text_header {
@@ -193,6 +194,15 @@
         box-shadow: none;
         outline: none;
     }
+    .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    }
 </style>
 
 <!-- START CART SECTION -->
@@ -203,19 +213,55 @@
                 <div class="card px-4 py-3"> <!-- Adding padding to the card -->
                     <h2 class="text_header">Your Cart</h2>
                     <!-- Display order items here -->
-                    <?php foreach ($order_details as $item): ?>
-                        <div class="cart_item">
-                            <div class="item_details">
-                                <h3><?php echo $item['menu_name']; ?></h3>
-                                <p>Price: <?php echo $item['menu_price']; ?>$</p>
-                                <p>Quantity: <?php echo $item['quantity']; ?></p>
-                                <!-- Modify button that redirects to order_food.php -->
-                                <a href="order_food.php" class="btn btn-primary">Modify</a>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                    <!-- Total price column -->
-                    <div class="total_price d-flex justify-content-between align-items-center">
+
+                    <table class="table table-bordered menus-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+foreach($order_details as $item)
+{
+    echo "<tr>";
+        echo "<td>";
+            echo $item['menu_name'];
+        echo "</td>";
+        echo "<td style = 'text-transform:capitalize'>";
+            echo $item['menu_price'];
+        echo "</td>";
+        echo "<td>";
+            echo $item['quantity'];
+        echo "</td>";
+        echo "<td>";
+            /****/
+
+                ?>
+                    <ul class="list-inline m-0">
+
+                        
+                        <li class="list-inline-item" data-toggle="tooltip" title="Edit">
+                            <button class="btn btn-success btn-sm rounded-0">
+                                <a href="order_food.php" style="color: white;">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </button>
+                        </li>
+
+                    </ul>
+                <?php
+            /****/
+        echo "</td>";
+    echo "</tr>";
+}
+?>
+</tbody>
+</table>
+<div class="total_price d-flex justify-content-between align-items-center">
                         <h3>Total Price: <?php echo $total_price; ?>$</h3>
                         <!-- Submit button -->
                         <a href="payment.php?order_id=<?php echo $order_id; ?>&total_price=<?php echo $total_price; ?>" class="btn btn-success">Proceed to Payment</a>
@@ -225,11 +271,7 @@
         </div>
     </div>
 </section>
-
-
-	<!-- WIDGET SECTION / FOOTER -->
-
-    <section class="widget_section" style="background-color: #222227;padding: 100px 0;">
+<section class="widget_section" style="background-color: #222227;padding: 100px 0;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
@@ -288,6 +330,8 @@
             </div>
         </div>
     </section>
+                    
+
 
 <!-- FOOTER SECTION -->
 <?php include "Includes/templates/footer.php"; ?>

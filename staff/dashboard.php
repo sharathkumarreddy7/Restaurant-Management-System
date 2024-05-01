@@ -394,16 +394,22 @@
                                                 echo "</td>";
                                                 echo "<td>";
 
-                                                    $stmtMenus = $con->prepare("SELECT menu_name, quantity
-                                                            from menus m, in_order in_o
-                                                            where m.menu_id = in_o.menu_id
-                                                            and order_id = ?");
-                                                    $stmtMenus->execute(array($order['order_id']));
-                                                    $menus = $stmtMenus->fetchAll();
-                                                    foreach($menus as $menu)
-                                                    {
-                                                        echo "<span style = 'display:block'>".$menu['menu_name']."</span>";
-                                                    }
+                                                $stmtMenus = $con->prepare("SELECT menu_name, quantity, menu_price
+                                                from menus m, in_order in_o
+                                                where m.menu_id = in_o.menu_id
+                                                and order_id = ?");
+                                        $stmtMenus->execute(array($row['order_id']));
+                                        $menus = $stmtMenus->fetchAll();
+
+                                        $total_price = 0;
+
+                                        foreach($menus as $menu)
+                                        {
+                                            echo "<span style = 'display:block'>".$menu['menu_name']."</span>";
+
+                                            $total_price += ($menu['menu_price']*$menu['quantity']);
+                                        }
+
 
                                                 echo "</td>";
                                                 echo "<td>";

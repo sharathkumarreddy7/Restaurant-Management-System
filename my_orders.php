@@ -32,6 +32,10 @@
     </script>
 
     <style type="text/css">
+            body {
+        background: url('Design/images/home_bg.jpg') center center fixed;
+        background-size: cover;
+    }
         .categories-table
         {
             -webkit-box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;

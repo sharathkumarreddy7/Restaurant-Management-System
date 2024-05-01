@@ -64,19 +64,21 @@
 <!-- ORDER FOOD PAGE STYLE -->
 
 	<style type="text/css">
-        body
-        {
-            background: #f7f7f7;
-        }
+body {
+    background: url('Design/images/home_bg.jpg') center center fixed;
+    background-size: cover;
+ /* Adjust the blur amount as needed */
+}
 
 		.text_header
 		{
-			margin-bottom: 5px;
-    		font-size: 18px;
-    		font-weight: bold;
-    		line-height: 1.5;
-    		margin-top: 22px;
-    		text-transform: capitalize;
+            margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-top: 22px;
+    text-transform: capitalize;
+    color: #ffffff;
 		}
 
         .items_tab
@@ -253,7 +255,7 @@
         <div class="select_menus_tab order_food_tab" id="menus_tab">
             <!-- ALERT MESSAGE -->
             <div class="alert alert-danger" role="alert" style="display: none;">Please select at least one item!</div>
-            <div class="text_header"><span>1. Choice of Items</span>
+            <div class="text_header"><span>Choice of Items</span>
             </div>
             <div>
                 <?php

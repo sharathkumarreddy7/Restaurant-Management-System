@@ -9,6 +9,10 @@
 ?>
 
 <style type="text/css">
+        body {
+        background: url('Design/images/home_bg.jpg') center center fixed;
+        background-size: cover;
+    }
     /* Styles for signup section */
     .signup-section {
         display: flex;
@@ -58,7 +62,7 @@
 
 
 <section class="signup-section">
-    <h2>Sign Up</h2>
+    <h2 style="color: white;">Sign Up</h2>
     <div class="signup-option">
         <form action="customer-signup.php" method="post">
             <input type="text" name="customer_name" placeholder="Customer Name" required>
@@ -70,7 +74,7 @@
             <input type="number" name="customer_phone" placeholder="Phone Number" required>
             <button type="submit">Sign Up</button>
         </form>
-        <p>Already have an account? <a href="login.php">Login</a></p>
+        <p style="color: white;">Already have an account? <a href="login.php">Login</a></p>
     </div>
 </section>
 

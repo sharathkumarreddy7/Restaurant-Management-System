@@ -29,7 +29,12 @@ include 'Includes/templates/navbar.php';
     vertical_staff.getElementsByClassName('staff_link')[0].className += " active_link";
 
 </script>
-
+<style type="text/css">
+    body {
+        background: url('Design/images/home_bg.jpg') center center fixed;
+        background-size: cover;
+    }
+</style>
 <?php
 
 // Check if user is logged in
